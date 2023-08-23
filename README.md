@@ -1,2 +1,2 @@
 # Multiplayer Kitchen Chaos
- A multiplayer tutorail followed by code monkey
+ A multiplayer tutorial followed with code monkey
