@@ -1,11 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
     public static GameInput Instance;
+    public event EventHandler OnInteractAction;
+
     private PlayerInputActions playerInputsMap;
+    
 
     private void Awake()
     {
@@ -13,6 +16,13 @@ public class GameInput : MonoBehaviour
 
         playerInputsMap = new PlayerInputActions();
         playerInputsMap.Player.Enable();
+
+        playerInputsMap.Player.Interact.performed += InteractPerformed;
+    }
+
+    private void InteractPerformed(InputAction.CallbackContext obj)
+    {
+        OnInteractAction?.Invoke(this,EventArgs.Empty);
     }
 
     public Vector2 GetMovmentVectorNormalized()
