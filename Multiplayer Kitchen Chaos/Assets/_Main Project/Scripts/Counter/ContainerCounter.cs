@@ -16,9 +16,7 @@ public class ContainerCounter : BaseCounter
             if (!player.HasKitchenObject())
             {
                 //Spown kitchen object and give it to the player
-                GameObject _kitchenObject = Instantiate(kitchenObjectSO.ObjectPrefab);
-                _kitchenObject.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
-
+                KitchenObject.SpownKitchenObject(kitchenObjectSO, player);
                 OnPlayerGrabedKitchenObject?.Invoke(this, EventArgs.Empty);
             }
         }

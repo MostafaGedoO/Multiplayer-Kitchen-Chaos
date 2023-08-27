@@ -11,6 +11,11 @@ public class BaseCounter : MonoBehaviour,IKitchenObjectParent
     public virtual void Interact(Player player)
     {
         Debug.LogError("This should not be called");
+    } 
+    
+    public virtual void InteractAlternate(Player player)
+    {
+        Debug.LogError("This should not be called");
     }
 
     public Transform GetFollowTrandormPoint()

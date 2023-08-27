@@ -6,6 +6,7 @@ public class GameInput : MonoBehaviour
 {
     public static GameInput Instance;
     public event EventHandler OnInteractAction;
+    public event EventHandler OnInteractAlternateAction;
 
     private PlayerInputActions playerInputsMap;
     
@@ -18,6 +19,12 @@ public class GameInput : MonoBehaviour
         playerInputsMap.Player.Enable();
 
         playerInputsMap.Player.Interact.performed += InteractPerformed;
+        playerInputsMap.Player.InteractAlternate.performed += InteractAlternatePerformed;
+    }
+
+    private void InteractAlternatePerformed(InputAction.CallbackContext context)
+    {
+        OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void InteractPerformed(InputAction.CallbackContext obj)
