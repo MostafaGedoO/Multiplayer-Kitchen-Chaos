@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6153739a75fc795468dd64799ab24c1c, type: 3}
+  m_Name: UnCocked - Cocked
+  m_EditorClassIdentifier: 
+  InputObject: {fileID: 11400000, guid: 6cbb2a7a4c7cfb449b27048fcb88a399, type: 2}
+  OutputObject: {fileID: 11400000, guid: 7fd674dfbdfc91a48b6ac4a0be6a0469, type: 2}
+  timer: 3

@@ -14,14 +14,12 @@ public class CuttingCounterAnimation : MonoBehaviour
 
     private void Start()
     {
-        cuttingCounter.OnCuttingPrograssChanged += CuttingCounter_OnCuttingPrograssChanged;
+        cuttingCounter.OnCuttingAnimation += CuttingCounter_OnCuttingAnimation;
     }
 
-    private void CuttingCounter_OnCuttingPrograssChanged(object sender, CuttingCounter.OnCuttingPrograssChangedEventArgs e)
+    private void CuttingCounter_OnCuttingAnimation(object sender, System.EventArgs e)
     {
-        if(e.PrograssAmountNormalized != 0)
-        {
-            _counterAnimator.SetTrigger("Cut");
-        }
+        _counterAnimator.SetTrigger("Cut");
     }
+
 }

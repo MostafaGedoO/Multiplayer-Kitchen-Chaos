@@ -5,17 +5,21 @@ using UnityEngine.UI;
 
 public class PrgrassBarUI : MonoBehaviour
 {
+    [SerializeField] private GameObject hasPrograssGameObject;
     [SerializeField] private Image barImage;
-    [SerializeField] private CuttingCounter cuttingCounter;
+    
+    private IHasPrograss hasProgress;
 
     private void Start()
     {
-        cuttingCounter.OnCuttingPrograssChanged += CuttingCounter_OnCuttingPrograssChanged;
+        hasProgress = hasPrograssGameObject.GetComponent<IHasPrograss>();
+
+        hasProgress.OnCuttingPrograssChanged += HasProgress_OnCuttingPrograssChanged;
 
         gameObject.SetActive(false);
     }
 
-    private void CuttingCounter_OnCuttingPrograssChanged(object sender, CuttingCounter.OnCuttingPrograssChangedEventArgs e)
+    private void HasProgress_OnCuttingPrograssChanged(object sender, IHasPrograss.OnCuttingPrograssChangedEventArgs e)
     {
         barImage.fillAmount = e.PrograssAmountNormalized;
 

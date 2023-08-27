@@ -37,13 +37,12 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 3812876574508226176}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: da32d18f77866bf47945f10fe354f359,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: da32d18f77866bf47945f10fe354f359,
         type: 3}
@@ -115,15 +114,17 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: da32d18f77866bf47945f10fe354f359,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8ceb278190f35164b944ed4a7f16249f, type: 2}
     - target: {fileID: 919132149155446097, guid: da32d18f77866bf47945f10fe354f359,
         type: 3}
       propertyPath: m_Name
       value: Burned meat patty
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da32d18f77866bf47945f10fe354f359, type: 3}
 --- !u!4 &6504414887129455810 stripped
 Transform:

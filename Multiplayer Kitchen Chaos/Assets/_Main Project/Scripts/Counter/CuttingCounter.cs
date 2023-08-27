@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CuttingCounter : BaseCounter
+public class CuttingCounter : BaseCounter,IHasPrograss
 {
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSO;
 
-    public event EventHandler<OnCuttingPrograssChangedEventArgs> OnCuttingPrograssChanged;
-    public class OnCuttingPrograssChangedEventArgs : EventArgs
-    {
-        public float PrograssAmountNormalized;
-    }
+    public event EventHandler<IHasPrograss.OnCuttingPrograssChangedEventArgs> OnCuttingPrograssChanged;
+    
+    public event EventHandler OnCuttingAnimation;
 
     private int cuttingPrograss;
     private int cuttingCount = 3;
@@ -27,7 +25,7 @@ public class CuttingCounter : BaseCounter
                 player.GetKitchenObject().SetKitchenObjectParent(this);
                 cuttingPrograss = 0;
 
-                OnCuttingPrograssChanged?.Invoke(this, new OnCuttingPrograssChangedEventArgs
+                OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
                 {
                     PrograssAmountNormalized = 0
                 });
@@ -62,10 +60,12 @@ public class CuttingCounter : BaseCounter
                 {
                     cuttingPrograss++;
 
-                    OnCuttingPrograssChanged?.Invoke(this, new OnCuttingPrograssChangedEventArgs
+                    OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
                     {
                         PrograssAmountNormalized = (float)cuttingPrograss / cuttingCount
                     });
+
+                    OnCuttingAnimation?.Invoke(this,EventArgs.Empty);
 
                     if (cuttingPrograss >= cuttingCount)
                     {
