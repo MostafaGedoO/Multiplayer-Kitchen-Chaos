@@ -6,11 +6,11 @@ using UnityEngine;
 public class PlateCounter : BaseCounter
 {
     [SerializeField] private KitchenObjectSO plateKitchenObjectSO;
-    [SerializeField] private float timeToSpownPlate = 4;
 
     public event EventHandler OnPlateSpowned;
     public event EventHandler OnPlateRemoved;
 
+    private float timeToSpownPlate = 4;
     private float spownPlateMaxNumber = 5;
     private float spownedPlates = 0;
     private float timer;
