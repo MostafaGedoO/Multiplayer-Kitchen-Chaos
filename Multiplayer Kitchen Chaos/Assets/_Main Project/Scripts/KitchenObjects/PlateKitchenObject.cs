@@ -39,7 +39,7 @@ public class PlateKitchenObject : KitchenObject
 
     }
 
-    public List<KitchenObjectSO> GetPlateIngrediants()
+    public List<KitchenObjectSO> GetPlateIngrediantsList()
     {
         return ingrediantsInPlateList;
     }

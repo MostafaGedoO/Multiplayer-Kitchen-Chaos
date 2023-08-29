@@ -14,7 +14,7 @@ public class PrgrassBarUI : MonoBehaviour
     {
         hasProgress = hasPrograssGameObject.GetComponent<IHasPrograss>();
 
-        hasProgress.OnCuttingPrograssChanged += HasProgress_OnCuttingPrograssChanged;
+        hasProgress.OnFryingPrograssChanged += HasProgress_OnCuttingPrograssChanged;
 
         gameObject.SetActive(false);
     }

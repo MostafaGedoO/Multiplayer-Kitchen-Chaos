@@ -25,7 +25,7 @@ public class PlateIconsUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (KitchenObjectSO _kitchenObjectSO in plateKitchenObject.GetPlateIngrediants())
+        foreach (KitchenObjectSO _kitchenObjectSO in plateKitchenObject.GetPlateIngrediantsList())
         {
             GameObject _iconTeplate = Instantiate(iconTemplate, transform);
            _iconTeplate.SetActive(true);

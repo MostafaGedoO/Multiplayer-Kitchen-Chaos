@@ -9,7 +9,7 @@ public class StoveCounter : BaseCounter,IHasPrograss
     [SerializeField] private FryingRecipeSO[] fryingRecipeSOArray;
     [SerializeField] private FryingRecipeSO[] burningRecipeSOArray;
 
-    public event EventHandler<IHasPrograss.OnCuttingPrograssChangedEventArgs> OnCuttingPrograssChanged;
+    public event EventHandler<IHasPrograss.OnCuttingPrograssChangedEventArgs> OnFryingPrograssChanged;
     public enum State { Idel,Frying,Fried,Burned }
 
     private State state;
@@ -38,7 +38,7 @@ public class StoveCounter : BaseCounter,IHasPrograss
             {
                 fryingTimer += Time.deltaTime;
 
-                OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
+                OnFryingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
                 {
                     PrograssAmountNormalized = fryingTimer / fryingRecipeSO.timer
                 });
@@ -59,7 +59,7 @@ public class StoveCounter : BaseCounter,IHasPrograss
             {
                 burningTimer += Time.deltaTime;
                 
-                OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
+                OnFryingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
                 {
                     PrograssAmountNormalized = burningTimer / fryingRecipeSO.timer
                 });
@@ -73,7 +73,7 @@ public class StoveCounter : BaseCounter,IHasPrograss
                     state = State.Burned;
                     FireOnSteteChangedEvent();
 
-                    OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
+                    OnFryingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
                     {
                         PrograssAmountNormalized = 0f
                     });
@@ -123,7 +123,7 @@ public class StoveCounter : BaseCounter,IHasPrograss
                             state = State.Idel;
                             FireOnSteteChangedEvent();
 
-                            OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
+                            OnFryingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
                             {
                                 PrograssAmountNormalized = 0
                             });
@@ -138,7 +138,7 @@ public class StoveCounter : BaseCounter,IHasPrograss
                 state = State.Idel;
                 FireOnSteteChangedEvent();
 
-                OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
+                OnFryingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
                 {
                     PrograssAmountNormalized = 0
                 });

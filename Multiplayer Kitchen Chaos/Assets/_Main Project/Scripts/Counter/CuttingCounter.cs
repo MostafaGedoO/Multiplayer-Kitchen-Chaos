@@ -7,8 +7,9 @@ public class CuttingCounter : BaseCounter,IHasPrograss
 {
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSO;
 
-    public event EventHandler<IHasPrograss.OnCuttingPrograssChangedEventArgs> OnCuttingPrograssChanged;
-    
+    public event EventHandler<IHasPrograss.OnCuttingPrograssChangedEventArgs> OnFryingPrograssChanged;
+
+    public static event EventHandler OnAnyCut;
     public event EventHandler OnCuttingAnimation;
 
     private int cuttingPrograss;
@@ -22,13 +23,16 @@ public class CuttingCounter : BaseCounter,IHasPrograss
             if (player.HasKitchenObject())
             {
                 //player has a kitchen object
-                player.GetKitchenObject().SetKitchenObjectParent(this);
-                cuttingPrograss = 0;
-
-                OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
+                if (HasVaildKitchenobject(player.GetKitchenObject().GetKitchenObjectSO()))
                 {
-                    PrograssAmountNormalized = 0
-                });
+                    player.GetKitchenObject().SetKitchenObjectParent(this);
+                    cuttingPrograss = 0;
+               
+                    OnFryingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
+                    {
+                        PrograssAmountNormalized = 0
+                    });
+                }
             }
             else
             {
@@ -72,12 +76,13 @@ public class CuttingCounter : BaseCounter,IHasPrograss
                 {
                     cuttingPrograss++;
 
-                    OnCuttingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
+                    OnFryingPrograssChanged?.Invoke(this, new IHasPrograss.OnCuttingPrograssChangedEventArgs
                     {
                         PrograssAmountNormalized = (float)cuttingPrograss / cuttingCount
                     });
 
                     OnCuttingAnimation?.Invoke(this,EventArgs.Empty);
+                    OnAnyCut?.Invoke(this, EventArgs.Empty);
 
                     if (cuttingPrograss >= cuttingCount)
                     {
@@ -88,6 +93,18 @@ public class CuttingCounter : BaseCounter,IHasPrograss
                 }
             }
         }
+    }
+
+    private bool HasVaildKitchenobject(KitchenObjectSO _kitchenObjectSO)
+    {
+        foreach(CuttingRecipeSO cuttingRecipeSOAllowed in cuttingRecipeSO)
+        {
+            if(_kitchenObjectSO == cuttingRecipeSOAllowed.InputObject)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
