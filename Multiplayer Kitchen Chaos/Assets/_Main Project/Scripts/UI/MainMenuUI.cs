@@ -20,4 +20,5 @@ public class MainMenuUI : MonoBehaviour
             Application.Quit();
         });
     }
+
 }

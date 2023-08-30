@@ -16,7 +16,7 @@ public class DeliveryManager : MonoBehaviour
 
     private List<RecipeSO> waittingRecipeSOList;
 
-    private float spawnRecipeTime = 5f;
+    private float spawnRecipeTime = 2f;
     private int maxRecipesNumber = 5;
     private int spawnedRecipes;
     private int deliverdRecipes;
@@ -32,23 +32,26 @@ public class DeliveryManager : MonoBehaviour
 
     private void Update()
     {
-        if (spawnedRecipes < maxRecipesNumber)
+        if (GameManager.Instance.IsGamePlaying())
         {
-            timer += Time.deltaTime;
-            if (timer >= spawnRecipeTime)
+            if (spawnedRecipes < maxRecipesNumber)
             {
-                timer = 0;
-
-                if (!once)
+                timer += Time.deltaTime;
+                if (timer >= spawnRecipeTime)
                 {
-                    once = true;
-                    spawnRecipeTime = 10f;
-                }
+                    timer = 0;
 
-                RecipeSO _waittingRecipeSo = recipeListSO.RecipeSOList[UnityEngine.Random.Range(0, recipeListSO.RecipeSOList.Count)];
-                waittingRecipeSOList.Add(_waittingRecipeSo);
-                OnWattingRcipesListChanged?.Invoke(this,EventArgs.Empty);
-                spawnedRecipes++;
+                    if (!once)
+                    {
+                        once = true;
+                        spawnRecipeTime = 10f;
+                    }
+
+                    RecipeSO _waittingRecipeSo = recipeListSO.RecipeSOList[UnityEngine.Random.Range(0, recipeListSO.RecipeSOList.Count)];
+                    waittingRecipeSOList.Add(_waittingRecipeSo);
+                    OnWattingRcipesListChanged?.Invoke(this, EventArgs.Empty);
+                    spawnedRecipes++;
+                }
             }
         }
     }

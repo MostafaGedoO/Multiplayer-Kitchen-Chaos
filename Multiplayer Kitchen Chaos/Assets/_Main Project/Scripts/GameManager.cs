@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
 
     public event EventHandler OnGameStateChanged;
+    public event EventHandler OnGamePaused;
+    public event EventHandler OnGameUnPaused;
 
     private State state;
     private float wattingToStartTimer = 1f;
@@ -19,11 +21,23 @@ public class GameManager : MonoBehaviour
     private float gamePlayingTimer;
     private float gamePlayingTimerMax = 120f;
 
+
+    private bool isGamePaused;
  
     private void Awake()
     {
         Instance = this;
         state = State.WattingToStart;
+    }
+
+    private void Start()
+    {
+        GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
+    }
+
+    private void GameInput_OnPauseAction(object sender, EventArgs e)
+    {
+        TogglePausedGame();
     }
 
     private void Update()
@@ -86,6 +100,21 @@ public class GameManager : MonoBehaviour
     public float GetGamePlayingTimerNormalized()
     {
         return gamePlayingTimer / gamePlayingTimerMax;
+    }
+
+    public void TogglePausedGame()
+    {
+        isGamePaused = !isGamePaused;
+        if (isGamePaused)
+        {
+            Time.timeScale = 0;
+            OnGamePaused?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            Time.timeScale = 1;
+            OnGameUnPaused?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
 

@@ -197,4 +197,9 @@ public class StoveCounter : BaseCounter,IHasPrograss
             state = this.state
         });
     }
+
+    public bool IsFriedState()
+    {
+        return state == State.Fried;
+    }
 }

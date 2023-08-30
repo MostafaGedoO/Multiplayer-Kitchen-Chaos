@@ -7,6 +7,7 @@ public class GameInput : MonoBehaviour
     public static GameInput Instance;
     public event EventHandler OnInteractAction;
     public event EventHandler OnInteractAlternateAction;
+    public event EventHandler OnPauseAction;
 
     private PlayerInputActions playerInputsMap;
     
@@ -20,6 +21,21 @@ public class GameInput : MonoBehaviour
 
         playerInputsMap.Player.Interact.performed += InteractPerformed;
         playerInputsMap.Player.InteractAlternate.performed += InteractAlternatePerformed;
+        playerInputsMap.Player.Pause.performed += Pause_performed;
+    }
+
+    private void OnDestroy()
+    {
+        playerInputsMap.Player.Interact.performed -= InteractPerformed;
+        playerInputsMap.Player.InteractAlternate.performed -= InteractAlternatePerformed;
+        playerInputsMap.Player.Pause.performed -= Pause_performed;
+
+        playerInputsMap.Dispose();
+    }
+
+    private void Pause_performed(InputAction.CallbackContext obj)
+    {
+        OnPauseAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void InteractAlternatePerformed(InputAction.CallbackContext context)

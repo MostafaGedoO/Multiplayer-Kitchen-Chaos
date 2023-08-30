@@ -18,5 +18,15 @@ public static class Loader
     {
         SceneManager.LoadSceneAsync(targetSceneIndex);
     }
+
+    public static void LoadMainMenu()
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
+
+    public static void RestartPlaying()
+    {
+        SceneManager.LoadSceneAsync(2);
+    }
 }
 

@@ -17,16 +17,19 @@ public class PlateCounter : BaseCounter
 
     private void Update()
     {
-        if(spownedPlates < spownPlateMaxNumber)
+        if (GameManager.Instance.IsGamePlaying())
         {
-            timer += Time.deltaTime;
-            if(timer >= timeToSpownPlate)
+            if (spownedPlates < spownPlateMaxNumber)
             {
-                //spown plate
-                OnPlateSpowned?.Invoke(this, EventArgs.Empty);
+                timer += Time.deltaTime;
+                if (timer >= timeToSpownPlate)
+                {
+                    //spown plate
+                    OnPlateSpowned?.Invoke(this, EventArgs.Empty);
 
-                timer = 0;
-                spownedPlates++;
+                    timer = 0;
+                    spownedPlates++;
+                }
             }
         }
     }

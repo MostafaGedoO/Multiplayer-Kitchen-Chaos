@@ -107,4 +107,8 @@ public class CuttingCounter : BaseCounter,IHasPrograss
         return false;
     }
 
+    new public static void ClearStaticDate()
+    {
+        OnAnyCut = null;
+    }
 }
