@@ -15,11 +15,12 @@ public class GameManager : MonoBehaviour
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnPaused;
 
+
+    [SerializeField] private float gamePlayingTimerMax = 120f;
     private State state;
     private float wattingToStartTimer = 1f;
     private float countdownToStartTimer = 3f;
     private float gamePlayingTimer;
-    private float gamePlayingTimerMax = 120f;
 
 
     private bool isGamePaused;

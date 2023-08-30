@@ -20,17 +20,14 @@ public class ContainerCounter : BaseCounter
                 KitchenObject.SpownKitchenObject(kitchenObjectSO, player);
                 OnPlayerGrabedKitchenObject?.Invoke(this, EventArgs.Empty);
             }
-            else
+            else if (isBredCounter)
             {
-                if (isBredCounter)
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject _plateKichenObject))
                 {
-                    if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject _plateKichenObject))
+                    if (_plateKichenObject.TryAddIngrediant(kitchenObjectSO))
                     {
-                        if (_plateKichenObject.TryAddIngrediant(kitchenObjectSO))
-                        {
-                            //Done
-                            OnPlayerGrabedKitchenObject?.Invoke(this, EventArgs.Empty);
-                        }
+                        //Spawn a bred and add it to the plate
+                        OnPlayerGrabedKitchenObject?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
