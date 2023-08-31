@@ -18,7 +18,7 @@ public class PauseGameUI : MonoBehaviour
         mainMenuButton.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
-            Loader.LoadScene(0);
+            Loader.LoadScene(Loader.Scene.MainMenu);
         });
     }
 
@@ -38,6 +38,5 @@ public class PauseGameUI : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
-
 
 }

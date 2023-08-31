@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
+using Unity.Netcode;
 
 
-public class Player : MonoBehaviour,IKitchenObjectParent
+public class Player : NetworkBehaviour,IKitchenObjectParent
 {
     [SerializeField] private LayerMask countersLayerMask;
     [Space]
@@ -10,7 +11,7 @@ public class Player : MonoBehaviour,IKitchenObjectParent
     [SerializeField] private float rotateSpeed = 7f;
     [SerializeField] private Transform playerHoldPoint;
 
-    public static Player Instance { get; private set; }
+    //public static Player Instance { get; private set; }
 
     private BaseCounter selectedCounter;
     private bool isWalking;
@@ -28,7 +29,7 @@ public class Player : MonoBehaviour,IKitchenObjectParent
 
     private void Awake()
     {
-        Instance = this;
+        //Instance = this;
     }
 
     private void Start()

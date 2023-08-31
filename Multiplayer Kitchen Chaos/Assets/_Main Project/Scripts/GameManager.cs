@@ -42,16 +42,17 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(state == State.WattingToStart)
-        {
-            wattingToStartTimer -= Time.deltaTime;
-            if(wattingToStartTimer < 0f)
-            {
-                state = State.CountdownToStart;
-                OnGameStateChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-        else if(state == State.CountdownToStart)
+        //if(state == State.WattingToStart)
+        //{
+        //    wattingToStartTimer -= Time.deltaTime;
+        //    if(wattingToStartTimer < 0f)
+        //    {
+        //        state = State.CountdownToStart;
+        //        OnGameStateChanged?.Invoke(this, EventArgs.Empty);
+        //    }
+        //}
+        //else
+        if(state == State.CountdownToStart)
         {
             countdownToStartTimer -= Time.deltaTime;
             if(countdownToStartTimer < 0f)
@@ -115,6 +116,12 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             OnGameUnPaused?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public void StartCountdown()
+    {
+        state = State.CountdownToStart;
+        OnGameStateChanged?.Invoke(this, EventArgs.Empty);
     }
 }
 

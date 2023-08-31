@@ -5,28 +5,30 @@ using UnityEngine.SceneManagement;
 
 public static class Loader 
 {
-    private static int targetSceneIndex;
+    private static Scene targetSceneIndex;
     private static int loadingSceneIndex = 1;
 
-    public static void LoadScene(int _sceneIndex)
+    public enum Scene { MainGameScene, MainMenu, LoadingScene }
+
+    public static void LoadScene(Scene _scene)
     {
-        targetSceneIndex = _sceneIndex;
-        SceneManager.LoadScene(loadingSceneIndex);
+        targetSceneIndex = _scene;
+        SceneManager.LoadScene(Scene.LoadingScene.ToString());
     }
 
     public static void LoadTargetScene()
     {
-        SceneManager.LoadSceneAsync(targetSceneIndex);
+        SceneManager.LoadSceneAsync(targetSceneIndex.ToString());
     }
 
     public static void LoadMainMenu()
     {
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadSceneAsync(Scene.MainMenu.ToString());
     }
 
     public static void RestartPlaying()
     {
-        SceneManager.LoadSceneAsync(2);
+        SceneManager.LoadSceneAsync(Scene.MainGameScene.ToString());
     }
 }
 
