@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : NetworkBehaviour
 {
     [SerializeField] AudioRefsSO audioRefsSO;
     
@@ -19,7 +20,7 @@ public class SoundManager : MonoBehaviour
         DeliveryManager.Instance.OnDeliveryFailed += DeliveryManager_OnDeliveryFailed;
         DeliveryManager.Instance.OnDeliveryCompleted += DeliveryManager_OnDeliveryCompleted;
         CuttingCounter.OnAnyCut += CuttingCounter_OnAnyCut;
-       // Player.Instance.OnPickUpKitchenObject += Player_OnPickUpKitchenObject;
+        Player.OnAnyPlayerPickedSomething += Player_OnPickUpKitchenObject;
         BaseCounter.OnAnyKitchenObjectDropedOnACounter += BaseCounter_OnAnyKitchenObjectDropedOnACounter;
         TrashCounter.OnAnyObjectTrashed += TrashCounter_OnAnyObjectTrashed;
     }
@@ -38,7 +39,8 @@ public class SoundManager : MonoBehaviour
 
     private void Player_OnPickUpKitchenObject(object sender, System.EventArgs e)
     {
-        //PlaySound(audioRefsSO.objectPickUp, Player.Instance.transform.position);
+        Player player = sender as Player;
+        PlaySound(audioRefsSO.objectPickUp, player.transform.position);
     }
 
     private void CuttingCounter_OnAnyCut(object sender, System.EventArgs e)
@@ -67,8 +69,15 @@ public class SoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(_audioClip, _position, _volume);
     }
 
-    public void PlayFootStepSound()
+    [ServerRpc(RequireOwnership = false)]
+    public void PlayFootStepSoundServerRpc()
     {
-        //PlaySound(audioRefsSO.footSteps, Player.Instance.transform.position);
+        PlayFootStepSoundClientRpc();
+    }
+    
+    [ClientRpc]
+    public void PlayFootStepSoundClientRpc()
+    {
+        PlaySound(audioRefsSO.footSteps, Player.LocalInstance.transform.position);
     }
 }

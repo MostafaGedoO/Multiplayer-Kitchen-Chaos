@@ -9,5 +9,6 @@ public class ClearStaicDataManager : MonoBehaviour
         CuttingCounter.ClearStaticDate();
         TrashCounter.ClearStaticDate();
         BaseCounter.ClearStaticDate();
+        Player.ClearStaticDate();
     }
 }

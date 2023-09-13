@@ -21,7 +21,7 @@ public class PlayerSound : MonoBehaviour
             timer -= Time.deltaTime;
             if(timer <= 0)
             {
-                SoundManager.instance.PlayFootStepSound();
+                SoundManager.instance.PlayFootStepSoundServerRpc();
                 timer = maxTimeToPlayAsound;
             }
         }

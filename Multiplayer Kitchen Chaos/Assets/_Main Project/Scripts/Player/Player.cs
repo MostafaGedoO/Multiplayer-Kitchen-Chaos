@@ -11,7 +11,7 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
     [SerializeField] private float rotateSpeed = 7f;
     [SerializeField] private Transform playerHoldPoint;
 
-    //public static Player Instance { get; private set; }
+    public static Player LocalInstance { get; private set; }
 
     private BaseCounter selectedCounter;
     private bool isWalking;
@@ -22,14 +22,22 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public event EventHandler OnPickUpKitchenObject;
 
+    //Events for visuals and pickup sounds
+    public static event EventHandler OnAnyPlayerSpawnd;
+    public static event EventHandler OnAnyPlayerPickedSomething;
+
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
         public BaseCounter SelectedCounter;
     }
 
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
-        //Instance = this;
+        if(IsOwner)
+        {
+            LocalInstance = this;
+        }
+        OnAnyPlayerSpawnd?.Invoke(this,EventArgs.Empty);
     }
 
     private void Start()
@@ -185,6 +193,7 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
         if(_kitchenObject != null)
         {
             OnPickUpKitchenObject?.Invoke(this,EventArgs.Empty);
+            OnAnyPlayerPickedSomething?.Invoke(this,EventArgs.Empty);
         }
     }
 
@@ -201,5 +210,16 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
     public bool HasKitchenObject()
     {
         return kitchenObject != null;
+    }
+
+    public static void ClearStaticDate()
+    {
+        OnAnyPlayerSpawnd = null;
+        OnAnyPlayerPickedSomething = null;
+    }
+
+    public NetworkObject GetNetworkObject()
+    {
+        return NetworkObject;
     }
 }
