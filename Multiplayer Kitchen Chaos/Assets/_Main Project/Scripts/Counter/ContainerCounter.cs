@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class ContainerCounter : BaseCounter
@@ -18,7 +19,8 @@ public class ContainerCounter : BaseCounter
             {
                 //Spown kitchen object and give it to the player
                 KitchenObject.SpownKitchenObject(kitchenObjectSO, player);
-                OnPlayerGrabedKitchenObject?.Invoke(this, EventArgs.Empty);
+
+                InteractVisualServerRpc();
             }
             else if (isBredCounter)
             {
@@ -27,11 +29,23 @@ public class ContainerCounter : BaseCounter
                     if (_plateKichenObject.TryAddIngrediant(kitchenObjectSO))
                     {
                         //Spawn a bred and add it to the plate
-                        OnPlayerGrabedKitchenObject?.Invoke(this, EventArgs.Empty);
+                        InteractVisualServerRpc();
                     }
                 }
             }
         }
     }
 
+
+    [ServerRpc(RequireOwnership = false)]
+    private void InteractVisualServerRpc()
+    {
+        InteractVisualClientRpc();
+    }
+
+    [ClientRpc]
+    private void InteractVisualClientRpc()
+    {
+        OnPlayerGrabedKitchenObject?.Invoke(this, EventArgs.Empty);
+    }
 }

@@ -15,8 +15,9 @@ public class PlateKitchenObject : KitchenObject
 
     private List<KitchenObjectSO> ingrediantsInPlateList;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ingrediantsInPlateList = new List<KitchenObjectSO>();    
     }
 

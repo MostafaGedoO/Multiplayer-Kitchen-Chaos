@@ -8,6 +8,12 @@ public class KitchenObject : NetworkBehaviour
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
 
     private IKitchenObjectParent kitchenObjectParent;
+    private FollowTransform followTransform;
+
+    protected virtual void Awake()
+    {
+        followTransform = GetComponent<FollowTransform>();
+    }
 
     public KitchenObjectSO GetKitchenObjectSO()
     {
@@ -16,22 +22,37 @@ public class KitchenObject : NetworkBehaviour
 
     public void SetKitchenObjectParent(IKitchenObjectParent _kitchenObjectParent)
     {
-        if(kitchenObjectParent != null)
+        SetKitchenObjectParentServerRpc(_kitchenObjectParent.GetNetworkObject());
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetKitchenObjectParentServerRpc(NetworkObjectReference _kitchenObjectParentNetworkObjectReference)
+    {
+        SetKitchenObjectParentClientRpc(_kitchenObjectParentNetworkObjectReference);
+    }
+
+    [ClientRpc]
+    private void SetKitchenObjectParentClientRpc(NetworkObjectReference _kitchenObjectParentNetworkObjectReference)
+    {
+        //Getting the IKitchenObjectParent from a network object refernce
+        _kitchenObjectParentNetworkObjectReference.TryGet(out NetworkObject _kitchenObjectParentNetworkObject);
+        IKitchenObjectParent _kitchenObjectParent = _kitchenObjectParentNetworkObject.GetComponent<IKitchenObjectParent>();
+
+        if (kitchenObjectParent != null)
         {
             kitchenObjectParent.ClearkitchenObject();
         }
 
         kitchenObjectParent = _kitchenObjectParent;
 
-        if(kitchenObjectParent.HasKitchenObject())
+        if (kitchenObjectParent.HasKitchenObject())
         {
             Debug.LogError("IkitchenObjectParent Has Already A kitchen Object");
         }
 
         kitchenObjectParent.SetKitchenObject(this);
 
-        //transform.parent = kitchenObjectParent.GetFollowTrandormPoint();
-        //transform.localPosition = Vector3.zero;
+        followTransform.SetTargetTransform(kitchenObjectParent.GetFollowTrandormPoint());
     }
 
     public IKitchenObjectParent GetKitchenObjectParent()
@@ -41,8 +62,17 @@ public class KitchenObject : NetworkBehaviour
 
     public void DestroySelf()
     {
-        kitchenObjectParent.ClearkitchenObject();
         Destroy(gameObject);
+    }
+
+    public void ClearKitchenObjectOnParent()
+    {
+        kitchenObjectParent.ClearkitchenObject();
+    }
+
+    public static void DestroyKitchenObject(KitchenObject _kitchenObject)
+    {
+        MultiPlayerGameManager.Instance.DestroyKitchenObjectServerRpc(_kitchenObject.NetworkObject);
     }
 
     public static void SpownKitchenObject(KitchenObjectSO _kitchenObjectSO,IKitchenObjectParent _kitchenObjectParent)

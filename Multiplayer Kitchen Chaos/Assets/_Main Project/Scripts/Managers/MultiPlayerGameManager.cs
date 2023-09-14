@@ -28,19 +28,38 @@ public class MultiPlayerGameManager : NetworkBehaviour
 
         //Getting the IKitchenObjectParent from a network object refernce
         _kitchenObjectParentNetworkObjectReference.TryGet(out NetworkObject _kitchenObjectParentNetworkObject);
-        IKitchenObjectParent kitchenObjectParent = _kitchenObjectParentNetworkObject.GetComponent<IKitchenObjectParent>();
+        IKitchenObjectParent _kitchenObjectParent = _kitchenObjectParentNetworkObject.GetComponent<IKitchenObjectParent>();
 
         //Getting the kitchen object and setting the parent
         KitchenObject _spownedKitchenObject = _kitchenObject.GetComponent<KitchenObject>();
-        _spownedKitchenObject.SetKitchenObjectParent(kitchenObjectParent);
+        _spownedKitchenObject.SetKitchenObjectParent(_kitchenObjectParent);
     }
 
-    private int GetKitchenObjectSOIndexFromList(KitchenObjectSO _kitchenObjectSO)
+    [ServerRpc(RequireOwnership = false)]
+    public void DestroyKitchenObjectServerRpc(NetworkObjectReference _kitchenObjectNetworkObjectRefernce) 
+    {
+        _kitchenObjectNetworkObjectRefernce.TryGet(out NetworkObject _kitchenObjectNetworkObject);
+        KitchenObject _kitchenObject = _kitchenObjectNetworkObject.GetComponent<KitchenObject>();
+
+        ClearKitchenObjectOnParentClientRpc(_kitchenObjectNetworkObjectRefernce);
+        _kitchenObject.DestroySelf();
+    }
+
+    [ClientRpc]
+    private void ClearKitchenObjectOnParentClientRpc(NetworkObjectReference _kitchenObjectNetworkObjectRefernce)
+    {
+        _kitchenObjectNetworkObjectRefernce.TryGet(out NetworkObject _kitchenObjectNetworkObject);
+        KitchenObject _kitchenObject = _kitchenObjectNetworkObject.GetComponent<KitchenObject>();
+
+        _kitchenObject.ClearKitchenObjectOnParent();
+    }
+
+    public int GetKitchenObjectSOIndexFromList(KitchenObjectSO _kitchenObjectSO)
     {
         return kitchenObjectListSO.kitchenObjectSOList.IndexOf(_kitchenObjectSO);
     }
 
-    private KitchenObjectSO GetKitchenObjectSOFromList(int _index)
+    public KitchenObjectSO GetKitchenObjectSOFromList(int _index)
     {
         return kitchenObjectListSO.kitchenObjectSOList[_index];
     }
