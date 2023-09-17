@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5473044367633033594}
   - component: {fileID: 5473044367633033593}
   - component: {fileID: 7972651146533064868}
-  - component: {fileID: 7887992848640795075}
+  - component: {fileID: 2596310537801371019}
   m_Layer: 6
   m_Name: CuttingCounter
   m_TagString: Untagged
@@ -99,7 +99,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d19d11244d2b35c4ba93e2bcf6995a3e, type: 2}
   - {fileID: 11400000, guid: e55b01b4f6dd1a24593c7a9725728ab8, type: 2}
   - {fileID: 11400000, guid: ffb9a4162eb82e74a995a7d62f5a8d07, type: 2}
---- !u!114 &7887992848640795075
+--- !u!114 &2596310537801371019
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5473044367633033594}
   - component: {fileID: 5473044367633033593}
   - component: {fileID: 8578229671649970955}
-  - component: {fileID: 7701896609601046776}
+  - component: {fileID: -925274955557284080}
   m_Layer: 6
   m_Name: ContainerCounter
   m_TagString: Untagged
@@ -96,7 +96,7 @@ MonoBehaviour:
   counterTopPoint: {fileID: 7111928126242758722}
   kitchenObjectSO: {fileID: 11400000, guid: b0d191eb17be1d645a4694d83821b75d, type: 2}
   isBredCounter: 0
---- !u!114 &7701896609601046776
+--- !u!114 &-925274955557284080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

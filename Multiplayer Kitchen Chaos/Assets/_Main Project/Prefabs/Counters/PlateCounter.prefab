@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5473044367633033594}
   - component: {fileID: 5473044367633033593}
   - component: {fileID: 2504910553655849711}
-  - component: {fileID: 7356442332368532872}
+  - component: {fileID: -6506313184865220498}
   m_Layer: 6
   m_Name: PlateCounter
   m_TagString: Untagged
@@ -96,7 +96,7 @@ MonoBehaviour:
   counterTopPoint: {fileID: 7111928126242758722}
   plateKitchenObjectSO: {fileID: 11400000, guid: 6148dcdd41cb547458b2a183db065cd6,
     type: 2}
---- !u!114 &7356442332368532872
+--- !u!114 &-6506313184865220498
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

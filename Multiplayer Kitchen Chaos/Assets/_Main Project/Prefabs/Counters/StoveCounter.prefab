@@ -508,7 +508,7 @@ GameObject:
   - component: {fileID: 5473044367633033594}
   - component: {fileID: 5473044367633033593}
   - component: {fileID: 4459437707225403934}
-  - component: {fileID: -253953397142840679}
+  - component: {fileID: -5088668880976690161}
   m_Layer: 6
   m_Name: StoveCounter
   m_TagString: Untagged
@@ -567,7 +567,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 231f31d51de16d9459336d294ccdf8bd, type: 2}
   burningRecipeSOArray:
   - {fileID: 11400000, guid: ccc050ac87072c84faf92d5123953d93, type: 2}
---- !u!114 &-253953397142840679
+--- !u!114 &-5088668880976690161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

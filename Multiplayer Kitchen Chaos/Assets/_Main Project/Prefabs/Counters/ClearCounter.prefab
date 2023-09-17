@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5473044367633033594}
   - component: {fileID: 5473044367633033593}
   - component: {fileID: 7213024693983636785}
-  - component: {fileID: -7870538526689866524}
+  - component: {fileID: -8656992741974189134}
   m_Layer: 6
   m_Name: ClearCounter
   m_TagString: Untagged
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   counterTopPoint: {fileID: 7111928126242758722}
---- !u!114 &-7870538526689866524
+--- !u!114 &-8656992741974189134
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

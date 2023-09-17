@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5473044367633033594}
   - component: {fileID: 5473044367633033593}
   - component: {fileID: 286006306931918236}
-  - component: {fileID: 8004678212563677775}
+  - component: {fileID: 8427377159405228174}
   m_Layer: 6
   m_Name: TrashCounter
   m_TagString: Untagged
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   counterTopPoint: {fileID: 7111928126242758722}
---- !u!114 &8004678212563677775
+--- !u!114 &8427377159405228174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

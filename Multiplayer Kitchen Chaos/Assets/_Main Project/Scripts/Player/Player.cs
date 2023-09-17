@@ -6,6 +6,7 @@ using Unity.Netcode;
 public class Player : NetworkBehaviour,IKitchenObjectParent
 {
     [SerializeField] private LayerMask countersLayerMask;
+    [SerializeField] private LayerMask collisionsLayerMask;
     [Space]
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float rotateSpeed = 7f;
@@ -85,13 +86,13 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
         float _moveDistance = moveSpeed * Time.deltaTime;
         float _playerHeight = 2f;
 
-        bool _canMove = !Physics.CapsuleCast(transform.position, transform.position + new Vector3(0, _playerHeight, 0), _playerRadius, _moveDir, _moveDistance);
+        bool _canMove = !Physics.BoxCast(transform.position, Vector3.one * _playerRadius , _moveDir,Quaternion.identity , _moveDistance, collisionsLayerMask);
 
         if (!_canMove)
         {
             //try moveing on the x only
             Vector3 _moveDirX = new Vector3(_moveDir.x, 0, 0).normalized;
-            _canMove = _moveDir.x != 0 & !Physics.CapsuleCast(transform.position, transform.position + new Vector3(0, _playerHeight, 0), _playerRadius, _moveDirX, _moveDistance);
+            _canMove = _moveDir.x != 0 & !Physics.BoxCast(transform.position, Vector3.one * _playerRadius, _moveDirX, Quaternion.identity, _moveDistance, collisionsLayerMask);
 
             if (_canMove)
             {
@@ -102,7 +103,7 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
             {
                 //cant move on x lets try z
                 Vector3 _moveDirZ = new Vector3(0, 0, _moveDir.z).normalized;
-                _canMove = _moveDir.z != 0 & !Physics.CapsuleCast(transform.position, transform.position + new Vector3(0, _playerHeight, 0), _playerRadius, _moveDirZ, _moveDistance);
+                _canMove = _moveDir.z != 0 & !Physics.BoxCast(transform.position, Vector3.one * _playerRadius, _moveDirZ, Quaternion.identity, _moveDistance, collisionsLayerMask);
 
                 if (_canMove)
                 {
