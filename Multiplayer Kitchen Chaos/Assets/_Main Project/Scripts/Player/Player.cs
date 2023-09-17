@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using Unity.Netcode;
-
+using System.Collections.Generic;
 
 public class Player : NetworkBehaviour,IKitchenObjectParent
 {
@@ -11,6 +11,7 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float rotateSpeed = 7f;
     [SerializeField] private Transform playerHoldPoint;
+    [SerializeField] private List<Vector3> spawnPositons; 
 
     public static Player LocalInstance { get; private set; }
 
@@ -38,11 +39,27 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
         {
             LocalInstance = this;
         }
+
+        transform.position = spawnPositons[(int)OwnerClientId];
         OnAnyPlayerSpawnd?.Invoke(this,EventArgs.Empty);
+
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        }
+    }
+
+    private void NetworkManager_OnClientDisconnectCallback(ulong _clientId)
+    {
+        if(_clientId == OwnerClientId && HasKitchenObject())
+        {
+            KitchenObject.DestroyKitchenObject(GetKitchenObject());
+        }
     }
 
     private void Start()
     {
+        GameManager.Instance.LoaclPlayerReady();
         GameInput.Instance.OnInteractAction += Interact;
         GameInput.Instance.OnInteractAlternateAction += InteractAlternate;
     }
@@ -84,7 +101,7 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
         //Moving into walls
         float _playerRadius = 0.7f;
         float _moveDistance = moveSpeed * Time.deltaTime;
-        float _playerHeight = 2f;
+        //float _playerHeight = 2f;
 
         bool _canMove = !Physics.BoxCast(transform.position, Vector3.one * _playerRadius , _moveDir,Quaternion.identity , _moveDistance, collisionsLayerMask);
 

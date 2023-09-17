@@ -60,6 +60,11 @@ MonoBehaviour:
   moveSpeed: 7
   rotateSpeed: 15
   playerHoldPoint: {fileID: 8095558468162457590}
+  spawnPositons:
+  - {x: 2, y: 0, z: 0}
+  - {x: -2, y: 0, z: 0}
+  - {x: 2, y: 0, z: -2}
+  - {x: -2, y: 0, z: -2}
 --- !u!114 &8095558466622806374
 MonoBehaviour:
   m_ObjectHideFlags: 0

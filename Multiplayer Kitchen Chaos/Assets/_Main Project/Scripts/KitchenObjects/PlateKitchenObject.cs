@@ -52,6 +52,8 @@ public class PlateKitchenObject : KitchenObject
         {
             kitchenObjectSO = _kitchenObjectSO
         });
+
+        SoundManager.instance.PlaySoundOnPlateIngrediantAdded();
     }
 
     public List<KitchenObjectSO> GetPlateIngrediantsList()

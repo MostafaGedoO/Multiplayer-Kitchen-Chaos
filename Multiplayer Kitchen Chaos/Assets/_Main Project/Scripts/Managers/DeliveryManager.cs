@@ -47,7 +47,7 @@ public class DeliveryManager : NetworkBehaviour
                     if (!once)
                     {
                         once = true;
-                        spawnRecipeTime = 10f;
+                        spawnRecipeTime = 5f;
                     }
 
                     int _waittingRecipeSoIndex = UnityEngine.Random.Range(0, recipeListSO.RecipeSOList.Count);

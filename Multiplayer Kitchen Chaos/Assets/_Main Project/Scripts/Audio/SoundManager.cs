@@ -69,6 +69,11 @@ public class SoundManager : NetworkBehaviour
         AudioSource.PlayClipAtPoint(_audioClip, _position, _volume);
     }
 
+    public void PlaySoundOnPlateIngrediantAdded()
+    {
+        PlaySound(audioRefsSO.objectDrop, Player.LocalInstance.transform.position);
+    }
+
     [ServerRpc(RequireOwnership = false)]
     public void PlayFootStepSoundServerRpc()
     {
