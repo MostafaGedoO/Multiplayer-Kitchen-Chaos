@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
+
 public class GameManager : NetworkBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
@@ -12,12 +13,10 @@ public class GameManager : NetworkBehaviour
 
     public enum State { WattingToStart, CountdownToStart, GamePlaying, GameOver }
 
-
     public event EventHandler OnGameStateChanged;
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnPaused;
     public event EventHandler OnLoaclPlayerReadyChanged;
-
 
     [SerializeField] private float gamePlayingTimerMax = 120f;
     private NetworkVariable<State> state = new NetworkVariable<State>(State.WattingToStart);
@@ -28,12 +27,10 @@ public class GameManager : NetworkBehaviour
 
     private bool isGamePaused;
 
-    //private Dictionary<ulong, bool> playerIDReadyDictionary;
 
     private void Awake()
     {
         Instance = this;
-        //playerIDReadyDictionary = new Dictionary<ulong, bool>();
     }
 
     private void Start()
@@ -44,7 +41,6 @@ public class GameManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         state.OnValueChanged += OnStateValueChanged;
-
         if(IsServer)
         {
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += NetworkSceneManager_OnLoadEventCompleted;
@@ -149,30 +145,7 @@ public class GameManager : NetworkBehaviour
     {
         isLocalPlayerReady = true;
         OnLoaclPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
-        
-       // SetPlayerReadyServerRpc();
     }
-
-    //[ServerRpc(RequireOwnership = false)]
-    //public void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
-    //{
-    //    playerIDReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
-
-    //    bool isAllPlayersReady = true;
-    //    foreach(ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
-    //    {
-    //        if(!playerIDReadyDictionary.ContainsKey(clientID) || !playerIDReadyDictionary[clientID])
-    //        {
-    //            isAllPlayersReady = false;
-    //            break;
-    //        }
-    //    }
-
-    //    if(isAllPlayersReady & NetworkManager.Singleton.ConnectedClientsIds.Count > 1)
-    //    {
-    //        state.Value = State.CountdownToStart;
-    //    }
-    //}
 
 
     public bool GetIsLocalPlayerReady()
