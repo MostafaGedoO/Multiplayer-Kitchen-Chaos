@@ -3970,7 +3970,7 @@ MonoBehaviour:
       OverridingTargetPrefab: {fileID: 0}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -4009,6 +4009,21 @@ PrefabInstance:
         type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2314484134
+      objectReference: {fileID: 0}
+    - target: {fileID: 5473044367633033593, guid: 0fcb7bb024eb9e548ae9aa6c92b916fe,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1.5151328
+      objectReference: {fileID: 0}
+    - target: {fileID: 5473044367633033593, guid: 0fcb7bb024eb9e548ae9aa6c92b916fe,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 3.4965255e-18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5473044367633033593, guid: 0fcb7bb024eb9e548ae9aa6c92b916fe,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 0.007566452
       objectReference: {fileID: 0}
     - target: {fileID: 5473044367633033594, guid: 0fcb7bb024eb9e548ae9aa6c92b916fe,
         type: 3}

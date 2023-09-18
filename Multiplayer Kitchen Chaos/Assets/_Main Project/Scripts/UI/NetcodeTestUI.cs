@@ -13,13 +13,13 @@ public class NetcodeTestUI : MonoBehaviour
     {
         host.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartHost();
+            MultiPlayerGameManager.Instance.StartHost();
             gameObject.SetActive(false);
         });
         
         client.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartClient();
+            MultiPlayerGameManager.Instance.StartClient();
             gameObject.SetActive(false);
         });
     }

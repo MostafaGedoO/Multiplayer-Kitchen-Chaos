@@ -89,6 +89,11 @@ public class GameManager : NetworkBehaviour
     public bool IsCountdownState()
     {
         return state.Value == State.CountdownToStart;
+    }  
+    
+    public bool IsWattingToStartState()
+    {
+        return state.Value == State.WattingToStart;
     }
 
     public float GetCountdownTimer()
