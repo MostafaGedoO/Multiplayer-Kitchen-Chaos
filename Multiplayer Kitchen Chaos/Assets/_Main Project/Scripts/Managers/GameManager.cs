@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
-   public static GameManager Instance { get; private set; }
+    [SerializeField] private GameObject playerPrefab;
+
+    public static GameManager Instance { get; private set; }
 
     public enum State { WattingToStart, CountdownToStart, GamePlaying, GameOver }
 
@@ -19,18 +21,19 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private float gamePlayingTimerMax = 120f;
     private NetworkVariable<State> state = new NetworkVariable<State>(State.WattingToStart);
-    private float countdownToStartTimer = 3f;
+    private float wattingToStartTimer = 3f;
+    private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
     private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(0f);
     private bool isLocalPlayerReady;
 
     private bool isGamePaused;
 
-    private Dictionary<ulong, bool> playerIDReadyDictionary;
+    //private Dictionary<ulong, bool> playerIDReadyDictionary;
 
     private void Awake()
     {
         Instance = this;
-        playerIDReadyDictionary = new Dictionary<ulong, bool>();
+        //playerIDReadyDictionary = new Dictionary<ulong, bool>();
     }
 
     private void Start()
@@ -41,6 +44,22 @@ public class GameManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         state.OnValueChanged += OnStateValueChanged;
+
+        if(IsServer)
+        {
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += NetworkSceneManager_OnLoadEventCompleted;
+        }
+    }
+
+    private void NetworkSceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    {
+        foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            GameObject _player = Instantiate(playerPrefab);
+            _player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+        }
+
+        state.Value = State.CountdownToStart;
     }
 
     private void OnStateValueChanged(State previousValue, State newValue)
@@ -59,8 +78,8 @@ public class GameManager : NetworkBehaviour
 
         if(state.Value == State.CountdownToStart)
         {
-            countdownToStartTimer -= Time.deltaTime;
-            if(countdownToStartTimer < 0f)
+            countdownToStartTimer.Value -= Time.deltaTime;
+            if(countdownToStartTimer.Value < 0f)
             {
                 state.Value = State.GamePlaying;
                 gamePlayingTimer.Value = gamePlayingTimerMax;
@@ -98,7 +117,7 @@ public class GameManager : NetworkBehaviour
 
     public float GetCountdownTimer()
     {
-        return countdownToStartTimer;
+        return countdownToStartTimer.Value;
     }
 
     public bool IsGameOverStete()
@@ -131,29 +150,29 @@ public class GameManager : NetworkBehaviour
         isLocalPlayerReady = true;
         OnLoaclPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
         
-        SetPlayerReadyServerRpc();
+       // SetPlayerReadyServerRpc();
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
-    {
-        playerIDReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
+    //[ServerRpc(RequireOwnership = false)]
+    //public void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
+    //{
+    //    playerIDReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
 
-        bool isAllPlayersReady = true;
-        foreach(ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
-        {
-            if(!playerIDReadyDictionary.ContainsKey(clientID) || !playerIDReadyDictionary[clientID])
-            {
-                isAllPlayersReady = false;
-                break;
-            }
-        }
+    //    bool isAllPlayersReady = true;
+    //    foreach(ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
+    //    {
+    //        if(!playerIDReadyDictionary.ContainsKey(clientID) || !playerIDReadyDictionary[clientID])
+    //        {
+    //            isAllPlayersReady = false;
+    //            break;
+    //        }
+    //    }
 
-        if(isAllPlayersReady & NetworkManager.Singleton.ConnectedClientsIds.Count > 1)
-        {
-            state.Value = State.CountdownToStart;
-        }
-    }
+    //    if(isAllPlayersReady & NetworkManager.Singleton.ConnectedClientsIds.Count > 1)
+    //    {
+    //        state.Value = State.CountdownToStart;
+    //    }
+    //}
 
 
     public bool GetIsLocalPlayerReady()

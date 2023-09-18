@@ -11,6 +11,8 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float rotateSpeed = 7f;
     [SerializeField] private Transform playerHoldPoint;
+    [SerializeField] private PlayerVisual playerVisual;
+    [Space]
     [SerializeField] private List<Vector3> spawnPositons; 
 
     public static Player LocalInstance { get; private set; }
@@ -40,7 +42,7 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
             LocalInstance = this;
         }
 
-        transform.position = spawnPositons[(int)OwnerClientId];
+        transform.position = spawnPositons[MultiPlayerGameManager.Instance.GetPlayerDataIndexFromClientID(OwnerClientId)];
         OnAnyPlayerSpawnd?.Invoke(this,EventArgs.Empty);
 
         if (IsServer)
@@ -62,6 +64,9 @@ public class Player : NetworkBehaviour,IKitchenObjectParent
         GameManager.Instance.LoaclPlayerReady();
         GameInput.Instance.OnInteractAction += Interact;
         GameInput.Instance.OnInteractAlternateAction += InteractAlternate;
+
+        PlayerData _playerData = MultiPlayerGameManager.Instance.GetPlayerDataFromClientID(OwnerClientId);
+        playerVisual.SetPlayerColor(MultiPlayerGameManager.Instance.GetAColorFromList(_playerData.colorId));
     }
 
     private void InteractAlternate(object sender, EventArgs e)

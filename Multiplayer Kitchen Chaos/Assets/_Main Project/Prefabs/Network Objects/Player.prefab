@@ -60,6 +60,7 @@ MonoBehaviour:
   moveSpeed: 7
   rotateSpeed: 15
   playerHoldPoint: {fileID: 8095558468162457590}
+  playerVisual: {fileID: 2929968119484111487}
   spawnPositons:
   - {x: 2, y: 0, z: 0}
   - {x: -2, y: 0, z: 0}
@@ -368,6 +369,18 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 8095558468573714640}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2929968119484111487 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6408734367801934511, guid: 1c5dda3c7cd3cf742afcade5419faeab,
+    type: 3}
+  m_PrefabInstance: {fileID: 8095558468573714640}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6764519497800152311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a54c3c67bef8b448b59fbd245dfb17d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6764519497800152308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3294758251327466532, guid: 1c5dda3c7cd3cf742afcade5419faeab,
