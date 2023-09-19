@@ -20,29 +20,22 @@ public class GameLobbyManager : MonoBehaviour
 
         InitializeLobbyServices();
 
+        //Sending a heartBeat to keep the lobby visable (lobby goes invisacble after 30s)
         InvokeRepeating("SetHeartBeat", 20, 20);
     }
 
     private async void InitializeLobbyServices()
     {
-        try
+        if (UnityServices.State != ServicesInitializationState.Initialized) // Initialize only one time
         {
+            InitializationOptions _options = new InitializationOptions();
+            _options.SetProfile(Random.Range(0, 1000).ToString()); //defferant profiles to be able to test in the same pc with multible builds
 
-            if (UnityServices.State != ServicesInitializationState.Initialized)
-            {
-                InitializationOptions _options = new InitializationOptions();
-                _options.SetProfile(Random.Range(0, 1000).ToString());
+            await UnityServices.InitializeAsync(_options);
 
-                await UnityServices.InitializeAsync(_options);
-
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            }
+            await AuthenticationService.Instance.SignInAnonymouslyAsync(); //The clock on Pc mush match the world Clock
         }
-        catch (AuthenticationException e)
-        {
-            Debug.LogError(e.Message);
-        }
-    } 
+    }
 
     public async void CreateLobby(string _lobbyName, bool _isPrivate)
     {
