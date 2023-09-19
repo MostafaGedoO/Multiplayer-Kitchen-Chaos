@@ -1,26 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LobbyUI : MonoBehaviour
 {
-    [SerializeField] private Button createGameButton;
-    [SerializeField] private Button joinGameButton;
-
+    [SerializeField] private Button mainMenuButton;
+    [SerializeField] private Button quickJoinButton;
+    [SerializeField] private Button JoinByCode;
+    [SerializeField] private TMP_InputField codeInputField;
 
     private void Awake()
     {
-        createGameButton.onClick.AddListener(() =>
+        mainMenuButton.onClick.AddListener(() =>
         {
-            MultiPlayerGameManager.Instance.StartHost();
-            Loader.LoadNetworkScene(Loader.Scene.CharcterSelect);
-
+            Loader.LoadScene(Loader.Scene.MainMenu);
         });
-        
-        joinGameButton.onClick.AddListener(() =>
+
+        quickJoinButton.onClick.AddListener(() =>
         {
-            MultiPlayerGameManager.Instance.StartClient();
+            GameLobbyManager.Instance.QuickJoinLobby();
+        });
+
+        JoinByCode.onClick.AddListener(() =>
+        {
+            if (codeInputField.text == "")
+                return;
+
+            GameLobbyManager.Instance.JoinLobbyByCode(codeInputField.text);
         });
     }
 }
