@@ -29,4 +29,13 @@ public class CreateLobbyUI : MonoBehaviour
         });
     }
 
+    private void Start()
+    {
+        lobbyNameInputField.text = MultiPlayerGameManager.Instance.GetLobbyName();
+
+        lobbyNameInputField.onValueChanged.AddListener((x) =>
+        {
+            MultiPlayerGameManager.Instance.SetLobbyName(lobbyNameInputField.text);
+        });
+    }
 }

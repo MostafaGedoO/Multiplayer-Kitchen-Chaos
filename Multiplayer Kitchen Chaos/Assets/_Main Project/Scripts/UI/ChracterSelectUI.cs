@@ -24,6 +24,7 @@ public class ChracterSelectUI : MonoBehaviour
         mainMenuButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.Shutdown();
+            GameLobbyManager.Instance.LeaveLobby();
             Loader.LoadScene(Loader.Scene.MainMenu);
         });
     }

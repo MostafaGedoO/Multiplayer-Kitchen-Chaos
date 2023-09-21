@@ -104,4 +104,52 @@ public class GameLobbyManager : MonoBehaviour
            return joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
         }
     }
+
+    public async void DeleteLobby()
+    {
+        try
+        {
+            if(joinedLobby != null)
+            {
+                await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+
+                joinedLobby = null;
+            }
+        }
+        catch(LobbyServiceException e)
+        {
+            Debug.LogError(e.Message);
+        }
+    }
+
+    public async void LeaveLobby()
+    {
+        try
+        {
+            if (joinedLobby != null)
+            {
+                await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id,AuthenticationService.Instance.PlayerId);
+                joinedLobby = null;
+            }
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError(e.Message);
+        }
+    }
+
+    public async void KickPlayer(string _playerID)
+    {
+        try
+        {
+            if(IsLobbyHost())
+            {
+                await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, _playerID);
+            }
+        }
+        catch(LobbyServiceException e)
+        {
+            Debug.LogError(e.Message);
+        }
+    }
 }

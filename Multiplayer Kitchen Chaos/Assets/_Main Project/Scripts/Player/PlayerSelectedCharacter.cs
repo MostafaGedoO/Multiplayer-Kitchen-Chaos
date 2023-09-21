@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerSelectedCharacter : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerSelectedCharacter : MonoBehaviour
     [SerializeField] private int playerIndex;
     [SerializeField] private GameObject readyText;
     [SerializeField] private PlayerVisual playerVisual;
+    [SerializeField] private TextMeshPro playerNameText;
 
     private void Start()
     {
@@ -33,6 +35,8 @@ public class PlayerSelectedCharacter : MonoBehaviour
             gameObject.SetActive(true);
 
             PlayerData _playerDate = MultiPlayerGameManager.Instance.GetPlayerData(playerIndex);
+
+            playerNameText.text = _playerDate.playerName.ToString();
 
             readyText.SetActive(PlayerReadyManager.instance.IsPlayerReady(_playerDate.playerClientId));
 

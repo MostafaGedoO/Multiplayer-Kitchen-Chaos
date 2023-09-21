@@ -40,6 +40,7 @@ public class PlayerReadyManager : NetworkBehaviour
 
         if (isAllPlayersReady & NetworkManager.Singleton.ConnectedClientsIds.Count > 1)
         {
+            GameLobbyManager.Instance.DeleteLobby();
             Loader.LoadNetworkScene(Loader.Scene.MainGameScene);
         }
     }

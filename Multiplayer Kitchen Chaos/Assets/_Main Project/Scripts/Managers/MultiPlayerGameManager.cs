@@ -18,6 +18,13 @@ public class MultiPlayerGameManager : NetworkBehaviour
 
     private NetworkList<PlayerData> PlayersDataList;
 
+    //Player Name
+    private const string PLAYER_NAME_KEY = "PlayerName";
+    private string playerName;
+
+    //LobbyName
+    private const string LOBBY_NAME_KEY = "LobbyName";
+    private string lobbyName;
 
     private void Awake()
     {
@@ -25,10 +32,37 @@ public class MultiPlayerGameManager : NetworkBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        playerName = PlayerPrefs.GetString(PLAYER_NAME_KEY,"Player" + UnityEngine.Random.Range(100,1000));
+
+        lobbyName = PlayerPrefs.GetString(LOBBY_NAME_KEY,"Lobby"+ UnityEngine.Random.Range(100,1000));
+
         PlayersDataList = new NetworkList<PlayerData>();
 
         PlayersDataList.OnListChanged += PlayersDataList_OnListChanged;
     }
+
+    public string GetPlayerName()
+    {
+        return playerName;
+    }
+
+    public void SetPlayerName(string _playerName)
+    {
+        playerName = _playerName;
+        PlayerPrefs.SetString(PLAYER_NAME_KEY, playerName);
+    }
+
+    public string GetLobbyName()
+    {
+        return lobbyName;
+    }
+
+    public void SetLobbyName(string _lobbyName)
+    {
+        lobbyName = _lobbyName;
+        PlayerPrefs.SetString(LOBBY_NAME_KEY ,lobbyName);
+    }
+
     private void PlayersDataList_OnListChanged(NetworkListEvent<PlayerData> changeEvent)
     {
         OnPlayerDataListChanged?.Invoke(this, EventArgs.Empty);
@@ -62,6 +96,7 @@ public class MultiPlayerGameManager : NetworkBehaviour
             playerClientId = _clientId,
             colorId = GetFirstUnusedColorID(),
         });
+        SetPlayerNameServerRpc(GetPlayerName());
     }
 
     private void NetworkManagerConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
@@ -88,7 +123,25 @@ public class MultiPlayerGameManager : NetworkBehaviour
     {
         OnTryingToConnect?.Invoke(this, EventArgs.Empty);
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        NetworkManager.Singleton.OnClientConnectedCallback += Network_OnClientConnectedCallback; ;
         NetworkManager.Singleton.StartClient();
+    }
+
+    private void Network_OnClientConnectedCallback(ulong obj)
+    {
+        SetPlayerNameServerRpc(GetPlayerName());
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerNameServerRpc(string _playerName , ServerRpcParams _serverRpcParams = default)
+    {
+        int _playerDataIndex = GetPlayerDataIndexFromClientID(_serverRpcParams.Receive.SenderClientId);
+
+        PlayerData _playerData = PlayersDataList[_playerDataIndex];
+
+        _playerData.playerName = _playerName;
+
+        PlayersDataList[_playerDataIndex] = _playerData;
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong obj)
