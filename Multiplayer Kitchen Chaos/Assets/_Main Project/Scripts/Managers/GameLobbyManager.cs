@@ -7,6 +7,7 @@ using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLobbyManager : MonoBehaviour
 {
@@ -224,7 +225,7 @@ public class GameLobbyManager : MonoBehaviour
 
     private void HandleListingLobbies()
     {
-        if(joinedLobby == null & AuthenticationService.Instance.IsSignedIn)
+        if(joinedLobby == null && AuthenticationService.Instance.IsSignedIn && SceneManager.GetActiveScene().name == Loader.Scene.Lobby.ToString())
         {
             ListAviliableLobbies();
         }
