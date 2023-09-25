@@ -20,7 +20,7 @@ public class GameLobbyManager : MonoBehaviour
     private int maxPlayerNumber = 4;
     private Lobby joinedLobby;
     private const string RELAY_JOIN_CODE_KEY = "RelayJoinCode";
-    private const string CONNECTION_PROTOCAL = "udp";
+    private const string CONNECTION_PROTOCAL = "dtls";
 
     //Events
     public event Action OnCreateLobbyStarted;
