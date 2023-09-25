@@ -22,7 +22,7 @@ public class MultiPlayerGameManager : NetworkBehaviour
     private const string PLAYER_NAME_KEY = "PlayerName";
     private string playerName;
 
-    //LobbyName
+    //Lobby Name
     private const string LOBBY_NAME_KEY = "LobbyName";
     private string lobbyName;
 
@@ -70,6 +70,7 @@ public class MultiPlayerGameManager : NetworkBehaviour
 
     public void StartHost()
     {
+        OnTryingToConnect?.Invoke(this, EventArgs.Empty);
         NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManagerConnectionApprovalCallback;
         NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;

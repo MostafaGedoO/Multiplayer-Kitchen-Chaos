@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -12,6 +14,16 @@ public class GameLobbyManager : MonoBehaviour
     private int maxPlayerNumber = 4;
     private Lobby joinedLobby;
 
+    //Events
+    public event Action OnCreateLobbyStarted;
+    public event Action OnCreateLobbyFailed;
+    public event Action OnJoinStarted;
+    public event Action OnJoinFailed;
+    public event Action OnQuickJoinFailed;
+
+    //Lobby Event
+    public event Action<List<Lobby>> OnLobbiesListChanged;
+
     private void Awake()
     {
         Instance = this;
@@ -22,6 +34,9 @@ public class GameLobbyManager : MonoBehaviour
 
         //Sending a heartBeat to keep the lobby visable (lobby goes invisacble after 30s)
         InvokeRepeating("SetHeartBeat", 20, 20);
+
+        //Refreshing the lobby List every 5 seconds
+        InvokeRepeating("HandleListingLobbies", 1, 5);
     }
 
     private async void InitializeLobbyServices()
@@ -29,7 +44,7 @@ public class GameLobbyManager : MonoBehaviour
         if (UnityServices.State != ServicesInitializationState.Initialized) // Initialize only one time
         {
             InitializationOptions _options = new InitializationOptions();
-            _options.SetProfile(Random.Range(0, 1000).ToString()); //defferant profiles to be able to test in the same pc with multible builds
+            _options.SetProfile(UnityEngine.Random.Range(0, 1000).ToString()); //defferant profiles to be able to test in the same pc with multible builds
 
             await UnityServices.InitializeAsync(_options);
 
@@ -41,14 +56,18 @@ public class GameLobbyManager : MonoBehaviour
     {
         try
         {
+            OnCreateLobbyStarted?.Invoke();
+
             joinedLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, maxPlayerNumber, new CreateLobbyOptions{ IsPrivate = _isPrivate });
             
+            //Start Host
             MultiPlayerGameManager.Instance.StartHost();
             Loader.LoadNetworkScene(Loader.Scene.CharcterSelect);
         }
         catch(LobbyServiceException e)
         {
             Debug.LogError(e.Message);
+            OnCreateLobbyFailed?.Invoke();
         }
     }
 
@@ -56,13 +75,17 @@ public class GameLobbyManager : MonoBehaviour
     {
         try
         {
+            OnJoinStarted?.Invoke();
+
             joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
 
+            //Start Client
             MultiPlayerGameManager.Instance.StartClient();
         }
         catch(LobbyServiceException e)
         {
             Debug.LogError(e.Message);
+            OnQuickJoinFailed?.Invoke();
         }
     }
 
@@ -70,13 +93,35 @@ public class GameLobbyManager : MonoBehaviour
     {
         try
         {
+            OnJoinStarted?.Invoke();
+
             joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(_code);
 
+            //Start Client
             MultiPlayerGameManager.Instance.StartClient();
         }
         catch(LobbyServiceException e)
         {
             Debug.LogError(e.Message);
+            OnJoinFailed?.Invoke();
+        }
+    }
+    
+    public async void JoinLobbyById(string _lobbyId)
+    {
+        try
+        {
+            OnJoinStarted?.Invoke();
+
+            joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(_lobbyId);
+
+            //Start Client
+            MultiPlayerGameManager.Instance.StartClient();
+        }
+        catch(LobbyServiceException e)
+        {
+            Debug.LogError(e.Message);
+            OnJoinFailed?.Invoke();
         }
     }
 
@@ -152,4 +197,37 @@ public class GameLobbyManager : MonoBehaviour
             Debug.LogError(e.Message);
         }
     }
+
+    private async void ListAviliableLobbies()
+    {
+        try
+        {
+            //Filtering the Lobby Search Fot only lobbies with aviailable slots
+            QueryLobbiesOptions _queryLobbiesOptions = new QueryLobbiesOptions()
+            {
+                Filters = new List<QueryFilter>()
+                {
+                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots,"0",QueryFilter.OpOptions.GT)
+                }
+            };
+
+            QueryResponse _queryResponce = await LobbyService.Instance.QueryLobbiesAsync(_queryLobbiesOptions);
+
+            //Firing Event With the Lobbies List
+            OnLobbiesListChanged?.Invoke(_queryResponce.Results);
+        }
+        catch(LobbyServiceException e)
+        {
+            Debug.LogError(e.Message);
+        }
+    }
+
+    private void HandleListingLobbies()
+    {
+        if(joinedLobby == null & AuthenticationService.Instance.IsSignedIn)
+        {
+            ListAviliableLobbies();
+        }
+    }
+
 }
